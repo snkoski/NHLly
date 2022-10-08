@@ -1,3 +1,4 @@
+import { Roster } from './components/Roster';
 import { TeamInfo } from './components/TeamInfo';
 import { TeamList } from './components/TeamList';
 
@@ -7,6 +8,7 @@ export default function App() {
       <header>Header bar will go here</header>
       <TeamList />
       <TeamInfo />
+      <Roster />
       <footer>Footer will go here</footer>
     </div>
   );
