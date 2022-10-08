@@ -21,7 +21,7 @@ export function TeamInfo() {
   };
 
   React.useEffect(() => {
-    getTeam(1);
+    getTeam(11);
   }, []);
 
   return (
