@@ -13,7 +13,7 @@ export type Player = {
   position: Position;
 };
 
-type Person = {
+export type Person = {
   fullName: string;
   id: number;
   link: string;
