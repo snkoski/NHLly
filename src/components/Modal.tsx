@@ -161,16 +161,35 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                         src={`http://nhl.bamcontent.com/images/headshots/current/168x168/${player.id}.jpg`}
                       />
                     </div>
+                    {(player.captain ||
+                      player.alternateCaptain ||
+                      player.rookie) && (
+                      <div>
+                        {player.captain && 'Captain'}
+                        {player.alternateCaptain && 'Alternate Captain'}
+                        {player.rookie && 'Rookie'}
+                      </div>
+                    )}
                     <div>
                       <h1 className="text-black">
-                        {player.fullName} | #{player.primaryNumber}
+                        {player.fullName} |{' '}
+                        {player.primaryPosition.abbreviation} | #
+                        {player.primaryNumber} | {player.nationality}{' '}
                       </h1>
                     </div>
                     <div>
                       {/* position | height | weight | age: 21 | team logo team name */}
                       <span className="text-black">
-                        {player.primaryPosition.abbreviation} | {player.height}{' '}
-                        | {player.weight} lb | Age: {player.currentAge} |{' '}
+                        {player.height} | {player.weight} lb | Age:{' '}
+                        {player.currentAge} |{' '}
+                        {player.primaryPosition.abbreviation === 'G'
+                          ? 'Catches: '
+                          : 'Shoots: '}
+                        {player.shootsCatches} |{' '}
+                        <img
+                          className="inline h-6 w-6"
+                          src={`https://www-league.nhlstatic.com/nhl.com/builds/site-core/d1b262bacd4892b22a38e8708cdb10c8327ff73e_1579810224/images/logos/team/current/team-${player.currentTeam.id}-light.svg`}
+                        />{' '}
                         {player.currentTeam.name}
                       </span>
                     </div>
