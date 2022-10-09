@@ -28,7 +28,7 @@ export function Root() {
                       className={({ isActive }) =>
                         isActive ? 'bg-blue-300' : ''
                       }
-                      to={`teams/:teamId`}
+                      to={`teams/${team.id}`}
                     >
                       {team.name}
                     </NavLink>

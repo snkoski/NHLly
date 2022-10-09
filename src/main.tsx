@@ -10,6 +10,7 @@ import {
 import { Root, loader as rootLoader } from './routes/root';
 import ErrorPage from './error-page';
 import Index from './routes';
+import { TeamInfo, loader as teamInfoLoader } from './routes/teamInfo';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +22,11 @@ const router = createBrowserRouter(
     >
       <Route errorElement={<ErrorPage />}>
         <Route element={<Index />} index />
+        <Route
+          element={<TeamInfo />}
+          loader={teamInfoLoader}
+          path="teams/:teamId"
+        />
       </Route>
     </Route>,
   ),

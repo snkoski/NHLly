@@ -1,33 +1,22 @@
 import React from 'react';
-import { Team, Error } from '../../types/types';
+import { LoaderFunctionArgs, useLoaderData } from 'react-router-dom';
+import { Team } from '../../types/types';
+import { getTeam } from '../requests';
+import invariant from 'tiny-invariant';
+
+export async function loader({ params }: LoaderFunctionArgs) {
+  invariant(params.teamId, `params.teamId is required`);
+  const team = await getTeam(params.teamId);
+  return team;
+}
 
 export function TeamInfo() {
-  const [team, setTeam] = React.useState<Team>();
-
-  const getTeam = async (teamId: number) => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_NHL_API_URL}/teams/${teamId}`,
-      );
-
-      const { teams: team } = await response.json();
-      console.log(team);
-
-      setTeam(team[0]);
-    } catch (error) {
-      const caughtError = error as Error;
-      console.error(caughtError.message);
-    }
-  };
-
-  React.useEffect(() => {
-    getTeam(11);
-  }, []);
+  const team = useLoaderData() as Team;
 
   return (
     <div>
       <h1>Team Info Will Go Here</h1>
-      <p>{team && team.name}</p>
+      <p>{team.name}</p>
     </div>
   );
 }
