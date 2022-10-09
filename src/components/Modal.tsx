@@ -56,6 +56,8 @@ export interface ModalProps {
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.playerId, `params.playerId is required`);
   const player = await getPlayer(params.playerId);
+  console.log('player', player);
+
   return player;
 }
 
@@ -147,12 +149,31 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                   </div>
                 </div>
                 <div className={childrenPadding}>
-                  <div>
-                    <h1>{player.fullName}</h1>
-                    <p>{player.primaryNumber}</p>
-                    <p>{player.birthDate}</p>
-                    <h2>{player.height}</h2>
-                    <p>{player.weight}</p>
+                  <div className="flex flex-col items-center">
+                    <div>
+                      <img
+                        alt="player headshot"
+                        className=" m-2 h-40 w-40 rounded-full bg-white"
+                        onError={({ currentTarget }) => {
+                          currentTarget.onerror = null; // prevents looping
+                          currentTarget.src = `https://assets.nhle.com/mugs/nhl/20192020/${teamAbbreviation}/${player.id}.png`;
+                        }}
+                        src={`http://nhl.bamcontent.com/images/headshots/current/168x168/${player.id}.jpg`}
+                      />
+                    </div>
+                    <div>
+                      <h1 className="text-black">
+                        {player.fullName} | #{player.primaryNumber}
+                      </h1>
+                    </div>
+                    <div>
+                      {/* position | height | weight | age: 21 | team logo team name */}
+                      <span className="text-black">
+                        {player.primaryPosition.abbreviation} | {player.height}{' '}
+                        | {player.weight} lb | Age: {player.currentAge} |{' '}
+                        {player.currentTeam.name}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

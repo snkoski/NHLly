@@ -25,7 +25,7 @@ export type Person = {
   weight: string;
 };
 
-type Position = {
+export type Position = {
   abbreviation: string;
   code: string;
   name: string;

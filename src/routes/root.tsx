@@ -41,7 +41,7 @@ export function Root() {
           </nav>
         </div>
       </div>
-      <div>
+      <div className=" w-full bg-neutral-700">
         <Outlet />
       </div>
     </>

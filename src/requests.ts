@@ -26,11 +26,12 @@ export async function getTeam(teamId: string) {
 export async function getRoster(teamId: string) {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_NHL_API_URL}/teams/${teamId}/roster`,
+      `${import.meta.env.VITE_NHL_API_URL}/teams/${teamId}?expand=team.roster`,
     );
-    const { roster } = await response.json();
+    const data = await response.json();
+    const teamInfo = data.teams[0];
 
-    return roster;
+    return teamInfo;
   } catch (error) {
     const caughtError = error as Error;
     console.error(caughtError.message);
