@@ -7,12 +7,22 @@ import {
   Route,
   createRoutesFromElements,
 } from 'react-router-dom';
-import { Root } from './routes/root';
+import { Root, loader as rootLoader } from './routes/root';
 import ErrorPage from './error-page';
+import Index from './routes';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route element={<Root />} errorElement={<ErrorPage />} path="/"></Route>,
+    <Route
+      element={<Root />}
+      errorElement={<ErrorPage />}
+      loader={rootLoader}
+      path="/"
+    >
+      <Route errorElement={<ErrorPage />}>
+        <Route element={<Index />} index />
+      </Route>
+    </Route>,
   ),
 );
 

@@ -1,25 +1,15 @@
 import React from 'react';
-import { Form, NavLink, Outlet } from 'react-router-dom';
+import { Form, NavLink, Outlet, useLoaderData } from 'react-router-dom';
 import { Team } from '../../types/types';
+import { getTeams } from '../requests';
+
+export async function loader() {
+  const teams = await getTeams();
+  return teams;
+}
 
 export function Root() {
-  const [teams, setTeams] = React.useState<Team[]>([]);
-
-  const getTeams = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_NHL_API_URL}/teams`);
-      const { teams } = await response.json();
-
-      setTeams(teams);
-    } catch (error) {
-      const caughtError = error as Error;
-      console.error(caughtError.message);
-    }
-  };
-
-  React.useEffect(() => {
-    getTeams();
-  }, []);
+  const teams = useLoaderData() as Team[];
 
   return (
     <>
