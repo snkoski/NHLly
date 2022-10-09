@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, NavLink, Outlet } from 'react-router-dom';
-import { Team, Errorz } from '../types';
+import { Team } from '../../types/types';
 
 export function Root() {
   const [teams, setTeams] = React.useState<Team[]>([]);
@@ -12,7 +12,7 @@ export function Root() {
 
       setTeams(teams);
     } catch (error) {
-      const caughtError = error as Errorz;
+      const caughtError = error as Error;
       console.error(caughtError.message);
     }
   };

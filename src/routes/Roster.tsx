@@ -1,5 +1,5 @@
 import React from 'react';
-import { Errorz, Player } from '../types';
+import { Error, Player } from '../../types/types';
 
 export function Roster() {
   const [players, setPlayers] = React.useState<Player[]>([]);
@@ -13,7 +13,7 @@ export function Roster() {
 
       setPlayers(roster);
     } catch (error) {
-      const caughtError = error as Errorz;
+      const caughtError = error as Error;
       console.error(caughtError.message);
     }
   };

@@ -1,5 +1,7 @@
-export type Errorz = {
-  message: string;
+export type Error = {
+  message?: string;
+  status?: string;
+  statusText?: string;
 };
 
 export type Team = {

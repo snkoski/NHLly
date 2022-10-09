@@ -1,5 +1,5 @@
 import React from 'react';
-import { Team, Errorz } from '../types';
+import { Team, Error } from '../../types/types';
 
 export function TeamInfo() {
   const [team, setTeam] = React.useState<Team>();
@@ -15,7 +15,7 @@ export function TeamInfo() {
 
       setTeam(team[0]);
     } catch (error) {
-      const caughtError = error as Errorz;
+      const caughtError = error as Error;
       console.error(caughtError.message);
     }
   };

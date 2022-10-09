@@ -1,5 +1,5 @@
 import React from 'react';
-import { Errorz, Person } from '../types';
+import { Error, Person } from '../../types/types';
 
 export function PlayerInfo() {
   const [player, setPlayer] = React.useState<Person | null>(null);
@@ -12,7 +12,7 @@ export function PlayerInfo() {
       const { people } = await response.json();
       setPlayer(people[0]);
     } catch (error) {
-      const caughtError = error as Errorz;
+      const caughtError = error as Error;
       console.error(caughtError.message);
     }
   };
