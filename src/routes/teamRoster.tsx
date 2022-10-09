@@ -1,5 +1,10 @@
 import React from 'react';
-import { LoaderFunctionArgs, useLoaderData } from 'react-router-dom';
+import {
+  Link,
+  LoaderFunctionArgs,
+  Outlet,
+  useLoaderData,
+} from 'react-router-dom';
 import invariant from 'tiny-invariant';
 import { Player } from '../../types/types';
 import { getRoster } from '../requests';
@@ -20,11 +25,14 @@ export function TeamRoster() {
         {players.map((player) => {
           return (
             <li key={player.person.id}>
-              <h3>{player.person.fullName}</h3>
+              <Link to={`/players/${player.person.id}`}>
+                {player.person.fullName}
+              </Link>
             </li>
           );
         })}
       </ul>
+      <Outlet />
     </div>
   );
 }

@@ -17,6 +17,7 @@ import {
 import { TeamStats, loader as teamsStatsLoader } from './routes/teamStats';
 import { TeamInfo, loader as teamsInfoLoader } from './routes/teamInfo';
 import { TeamRoster, loader as teamsRosterLoader } from './routes/teamRoster';
+import { Modal, loader as playerLoader } from './components/Modal';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -47,8 +48,13 @@ const router = createBrowserRouter(
             element={<TeamRoster />}
             loader={teamsRosterLoader}
             path="/teams/:teamId/roster"
-          />
+          ></Route>
         </Route>
+        <Route
+          element={<Modal dimensions="big" show={true} />}
+          loader={playerLoader}
+          path="/players/:playerId"
+        />
       </Route>
     </Route>,
   ),

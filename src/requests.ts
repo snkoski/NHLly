@@ -36,3 +36,16 @@ export async function getRoster(teamId: string) {
     console.error(caughtError.message);
   }
 }
+
+export async function getPlayer(playerId: string) {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_NHL_API_URL}/people/${playerId}`,
+    );
+    const { people } = await response.json();
+    return people[0];
+  } catch (error) {
+    const caughtError = error as Error;
+    console.error(caughtError.message);
+  }
+}

@@ -16,9 +16,13 @@ export type Player = {
 };
 
 export type Person = {
+  birthDate: string;
   fullName: string;
+  height: string;
   id: number;
   link: string;
+  primaryNumber: string;
+  weight: string;
 };
 
 type Position = {
