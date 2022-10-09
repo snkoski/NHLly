@@ -22,3 +22,17 @@ export async function getTeam(teamId: string) {
     console.error(caughtError.message);
   }
 }
+
+export async function getRoster(teamId: string) {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_NHL_API_URL}/teams/${teamId}/roster`,
+    );
+    const { roster } = await response.json();
+
+    return roster;
+  } catch (error) {
+    const caughtError = error as Error;
+    console.error(caughtError.message);
+  }
+}

@@ -10,7 +10,13 @@ import {
 import { Root, loader as rootLoader } from './routes/root';
 import ErrorPage from './error-page';
 import Index from './routes';
-import { TeamInfo, loader as teamInfoLoader } from './routes/teamInfo';
+import {
+  loader as teamInfoLoader,
+  TeamContainer,
+} from './routes/teamContainer';
+import { TeamStats, loader as teamsStatsLoader } from './routes/teamStats';
+import { TeamInfo, loader as teamsInfoLoader } from './routes/teamInfo';
+import { TeamRoster, loader as teamsRosterLoader } from './routes/teamRoster';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,10 +29,26 @@ const router = createBrowserRouter(
       <Route errorElement={<ErrorPage />}>
         <Route element={<Index />} index />
         <Route
-          element={<TeamInfo />}
+          element={<TeamContainer />}
           loader={teamInfoLoader}
           path="teams/:teamId"
-        />
+        >
+          <Route
+            element={<TeamInfo />}
+            loader={teamsInfoLoader}
+            path="/teams/:teamId/info"
+          />
+          <Route
+            element={<TeamStats />}
+            loader={teamsStatsLoader}
+            path="/teams/:teamId/stats"
+          />
+          <Route
+            element={<TeamRoster />}
+            loader={teamsRosterLoader}
+            path="/teams/:teamId/roster"
+          />
+        </Route>
       </Route>
     </Route>,
   ),

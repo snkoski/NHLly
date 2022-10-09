@@ -10,12 +10,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return team;
 }
 
-export function TeamInfo() {
+export function TeamStats() {
   const team = useLoaderData() as Team;
 
   return (
     <div>
-      <h1>Team Info</h1>
+      <h1>Team Stats</h1>
       <p>{team.name}</p>
     </div>
   );
