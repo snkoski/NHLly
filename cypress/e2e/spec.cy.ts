@@ -15,7 +15,7 @@ describe('test for testing', () => {
       .within(function() {
         cy.get('ul').within(function() {
           cy.get('a')
-            .first()
+            .eq(1)
             .then(function(link) {
               const firstPlayer = link.text().split(' ')[0];
               console.log('firstPlayer', firstPlayer);
@@ -24,10 +24,14 @@ describe('test for testing', () => {
         });
       })
       .then(function() {
-        cy.get('#player-search').type(this.player);
-        cy.get('#team-roster').within(function() {
-          cy.get('a').first().click();
-        });
+        cy.get('#player-search')
+          .type(this.player)
+          .wait(2000)
+          .then(function() {
+            cy.get('#team-roster').within(function() {
+              cy.get('a').first().click();
+            });
+          });
       });
     cy.get('#player-stats-table').contains('Team');
     cy.get('button').contains('Playoffs').click();
