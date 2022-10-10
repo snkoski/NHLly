@@ -14,7 +14,10 @@ import {
   loader as teamInfoLoader,
   TeamContainer,
 } from './routes/teamContainer';
-import { TeamStats, loader as teamsStatsLoader } from './routes/teamStats';
+import {
+  TeamStatsPage,
+  loader as teamsStatsLoader,
+} from './routes/teamStatsPage';
 import { TeamInfo, loader as teamsInfoLoader } from './routes/teamInfo';
 import { TeamRoster, loader as teamsRosterLoader } from './routes/teamRoster';
 import { Modal, loader as playerLoader } from './components/Modal';
@@ -40,7 +43,7 @@ const router = createBrowserRouter(
             path="/teams/:teamId/info"
           />
           <Route
-            element={<TeamStats />}
+            element={<TeamStatsPage />}
             loader={teamsStatsLoader}
             path="/teams/:teamId/stats"
           />
@@ -54,7 +57,7 @@ const router = createBrowserRouter(
           element={<Modal dimensions="big" show={true} />}
           loader={playerLoader}
           path="/players/:playerId"
-        />
+        ></Route>
       </Route>
     </Route>,
   ),

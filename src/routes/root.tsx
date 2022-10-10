@@ -1,15 +1,38 @@
 import React from 'react';
-import { Form, NavLink, Outlet, useLoaderData } from 'react-router-dom';
+import {
+  Form,
+  LoaderFunctionArgs,
+  NavLink,
+  Outlet,
+  useLoaderData,
+  useSubmit,
+  useLocation,
+} from 'react-router-dom';
 import { Team } from '../../types/types';
 import { getTeams } from '../requests';
 
-export async function loader() {
-  const teams = await getTeams();
-  return teams;
+type LoaderData = {
+  searchTerm: string;
+  teams: Team[];
+};
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const url = new URL(request.url);
+
+  const searchTerm = url.searchParams.get('team');
+  const teams = await getTeams(searchTerm);
+  return { searchTerm, teams };
 }
 
 export function Root() {
-  const teams = useLoaderData() as Team[];
+  const { searchTerm, teams } = useLoaderData() as LoaderData;
+  const submit = useSubmit();
+  const location = useLocation();
+
+  React.useEffect(() => {
+    const searchInput = document.getElementById('search') as HTMLInputElement;
+    searchInput.value = searchTerm;
+  }, [searchTerm]);
 
   return (
     <>
@@ -17,7 +40,21 @@ export function Root() {
         <h1>Teams</h1>
         <div>
           <Form role="search">
-            <input id="search" name="search" type="search" />
+            <input
+              aria-label="search form"
+              defaultValue={searchTerm}
+              id="search"
+              name="team"
+              onChange={(event) => {
+                const isFirstSearch = searchTerm == null;
+                submit(event.currentTarget.form, {
+                  action: location.pathname,
+                  replace: !isFirstSearch,
+                });
+              }}
+              placeholder="Search Teams"
+              type="search"
+            />
           </Form>
           <nav>
             {teams.length ? (
@@ -28,7 +65,7 @@ export function Root() {
                       className={({ isActive }) =>
                         isActive ? 'bg-blue-300' : ''
                       }
-                      to={`teams/${team.id}`}
+                      to={`teams/${team.id}/info`}
                     >
                       {team.name}
                     </NavLink>
@@ -36,7 +73,7 @@ export function Root() {
                 ))}
               </ul>
             ) : (
-              <p>Unable to load teams</p>
+              <p>No teams found</p>
             )}
           </nav>
         </div>

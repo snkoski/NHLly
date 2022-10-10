@@ -23,7 +23,7 @@ export function TeamContainer() {
       <h1>Team Info Will Go Here</h1>
       <p>{team.name}</p>
       <nav>
-        <ul>
+        <ul className="flex justify-evenly">
           <li>
             <NavLink
               className={({ isActive }) => (isActive ? 'bg-blue-300' : '')}
