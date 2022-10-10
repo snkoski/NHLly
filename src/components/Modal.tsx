@@ -6,8 +6,14 @@ import {
   useNavigate,
 } from 'react-router-dom';
 import invariant from 'tiny-invariant';
-import { getPlayer } from '../requests';
-import { Person } from '../../types/types';
+import {
+  getPlayer,
+  getPlayerPlayoffYearByYearStats,
+  getPlayerYearByYearStats,
+} from '../requests';
+import { Person, PlayerSeason } from '../../types/types';
+import { TeamLogo } from './TeamLogo';
+import { StatsTable } from './StatsTable';
 
 export interface ModalProps {
   /**
@@ -53,12 +59,22 @@ export interface ModalProps {
   show: boolean;
 }
 
+type LoaderData = {
+  player: Person;
+  playoffYearByYearStats: PlayerSeason[];
+  yearByYearStats: PlayerSeason[];
+};
+
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.playerId, `params.playerId is required`);
   const player = await getPlayer(params.playerId);
-  console.log('player', player);
+  const yearByYearStats = await getPlayerYearByYearStats(params.playerId);
+  const playoffYearByYearStats = await getPlayerPlayoffYearByYearStats(
+    params.playerId,
+  );
+  console.log('getPlayerYearByYearStats', yearByYearStats);
 
-  return player;
+  return { player, playoffYearByYearStats, yearByYearStats };
 }
 
 /**
@@ -75,7 +91,17 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
       noContentPadding,
     } = props;
 
-    const player = useLoaderData() as Person;
+    const { player, playoffYearByYearStats, yearByYearStats } =
+      useLoaderData() as LoaderData;
+
+    const [currentStats, setCurrentStats] = React.useState('reg');
+    const handleStatChange = (event) => {
+      const selectedStats = event.target.value;
+      if (selectedStats !== currentStats) {
+        setCurrentStats(selectedStats);
+      }
+      console.log(currentStats);
+    };
 
     const modalSize =
       dimensions === 'big'
@@ -156,7 +182,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                         className=" m-2 h-40 w-40 rounded-full bg-white"
                         onError={({ currentTarget }) => {
                           currentTarget.onerror = null; // prevents looping
-                          currentTarget.src = `https://assets.nhle.com/mugs/nhl/20192020/${teamAbbreviation}/${player.id}.png`;
+                          currentTarget.src = `https://assets.nhle.com/mugs/nhl/20192020/${player.currentTeam.abbreviation}/${player.id}.png`;
                         }}
                         src={`http://nhl.bamcontent.com/images/headshots/current/168x168/${player.id}.jpg`}
                       />
@@ -186,12 +212,39 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                           ? 'Catches: '
                           : 'Shoots: '}
                         {player.shootsCatches} |{' '}
-                        <img
-                          className="inline h-6 w-6"
-                          src={`https://www-league.nhlstatic.com/nhl.com/builds/site-core/d1b262bacd4892b22a38e8708cdb10c8327ff73e_1579810224/images/logos/team/current/team-${player.currentTeam.id}-light.svg`}
-                        />{' '}
+                        <TeamLogo size="small" teamId={player.currentTeam.id} />{' '}
                         {player.currentTeam.name}
                       </span>
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      onClick={(event) => handleStatChange(event)}
+                      type="button"
+                      value="reg"
+                    >
+                      Regular Season
+                    </button>
+                    <button
+                      onClick={(event) => handleStatChange(event)}
+                      type="button"
+                      value="playoff"
+                    >
+                      Playoffs
+                    </button>
+                    <div>
+                      {currentStats === 'reg' && (
+                        <StatsTable
+                          playerStats={yearByYearStats}
+                          position={player.primaryPosition.abbreviation}
+                        />
+                      )}
+                      {currentStats === 'playoff' && (
+                        <StatsTable
+                          playerStats={playoffYearByYearStats}
+                          position={player.primaryPosition.abbreviation}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>

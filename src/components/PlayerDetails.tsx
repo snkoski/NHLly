@@ -13,8 +13,6 @@ export function PlayerDetails({
   position,
   teamAbbreviation,
 }: PlayerDetailsProps) {
-  // console.log('props', props);
-
   return (
     <div className="flex items-center gap-2">
       <img
