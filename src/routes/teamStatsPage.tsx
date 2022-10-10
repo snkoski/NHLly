@@ -22,7 +22,7 @@ export function TeamStatsPage() {
   const { rankings, stats } = useLoaderData() as TeamStats;
 
   return (
-    <div>
+    <div id="team-stats">
       <h1>Team Stats</h1>
       <p>
         Wins - {stats.wins} League Ranking - {rankings.wins}

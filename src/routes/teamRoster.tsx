@@ -39,12 +39,12 @@ export function TeamRoster() {
   }, [playerSearch]);
 
   return (
-    <div>
+    <div id="team-roster">
       <Form role="search">
         <input
           aria-label="player search form"
           defaultValue={playerSearch}
-          id="search"
+          id="player-search"
           name="player"
           onChange={(event) => {
             const isFirstSearch = playerSearch == null;
