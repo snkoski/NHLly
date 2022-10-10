@@ -1,7 +1,7 @@
-import { PlayerSeason } from '../types/types';
+import { Player, PlayerSeason } from '../types/types';
 import { matchSorter } from 'match-sorter';
 
-export async function getTeams(query: string) {
+export async function getTeams(query: string | null) {
   try {
     const response = await fetch(`${import.meta.env.VITE_NHL_API_URL}/teams`);
     const data = await response.json();
@@ -35,20 +35,20 @@ export async function getTeam(teamId: string) {
   }
 }
 
-export async function getRoster(teamId: string, query: string) {
+export async function getRoster(teamId: string, query: string | null) {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_NHL_API_URL}/teams/${teamId}?expand=team.roster`,
     );
     const data = await response.json();
     console.log('getRoster data', data);
-    let roster = data.teams[0].roster.roster;
+    let roster: Player[] = data.teams[0].roster.roster;
     if (query) {
       roster = matchSorter(roster, query, {
         keys: ['person.fullName'],
       });
     }
-    const abbreviation = data.teams[0].abbreviation;
+    const abbreviation: string = data.teams[0].abbreviation;
     return { abbreviation, roster };
   } catch (error) {
     const caughtError = error as Error;

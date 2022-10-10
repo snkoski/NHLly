@@ -14,7 +14,7 @@ export function PlayerDetails({
   teamAbbreviation,
 }: PlayerDetailsProps) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex w-80 items-center gap-2 border-b-[1px] border-black">
       <img
         alt="player headshot"
         className=" m-2 h-10 w-10 rounded-full bg-white"

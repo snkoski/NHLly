@@ -17,16 +17,6 @@ import { StatsTable } from './StatsTable';
 
 export interface ModalProps {
   /**
-   * This makes it possible to pass through additional props.
-   */
-  [propName: string]: any;
-
-  /**
-   * The className -- this is mostly used to hook GA event tracking
-   */
-  className?: string;
-
-  /**
    * Determine the modal size when not in mobile view.
    *
    * Accepted values: big | small
@@ -37,21 +27,6 @@ export interface ModalProps {
    *
    */
   dimensions?: 'big' | 'small';
-
-  /**
-   * Label or title that is visible at the top of the modal
-   */
-  label?: string | React.ReactElement;
-
-  /**
-   * Alignment of label - default center
-   */
-  leftAlignLabel?: boolean;
-
-  /**
-   * Padding of children container - default - top 24px right / left - 36px
-   */
-  noContentPadding?: boolean;
 
   /**
    * Boolean to determine whether the modal is visible(true) or hidden(false)
@@ -83,13 +58,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
  */
 export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
   (props, ref) => {
-    const {
-      show,
-      dimensions = 'small',
-      label,
-      leftAlignLabel = true,
-      noContentPadding,
-    } = props;
+    const { show, dimensions = 'small' } = props;
 
     const { player, playoffYearByYearStats, yearByYearStats } =
       useLoaderData() as LoaderData;
@@ -109,10 +78,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
         : `sm:min-w-[375px] sm:max-w-[480px]`;
 
     const closeIconPosition = dimensions === 'big' ? `sm:pr-28` : `sm:pr-10`;
-    const labelAlignment = leftAlignLabel ? '' : 'm-auto';
-    const childrenPadding = noContentPadding
-      ? 'p-0'
-      : 'pt-6 pb-10 px-9 sm:pb-0';
+
     const navigate = useNavigate();
 
     const onClose = () => {
@@ -161,10 +127,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                 className={`relative inline-block transform overflow-hidden bg-white px-4 pt-3  pb-4 align-bottom transition-all sm:px-8 sm:pt-8 sm:pb-8 sm:align-middle ${modalSize}`}
               >
                 <div className="flex flex-row items-center">
-                  <div className={`flex justify-center ${labelAlignment}`}>
-                    {label}
-                  </div>
-                  <div className={`absolute right-0 pr-2 ${closeIconPosition}`}>
+                  <div className={`absolute right-0 pr-6 text-2xl text-black`}>
                     <button
                       className={`h-5 w-5`}
                       onClick={onClose}
@@ -174,8 +137,11 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                     </button>
                   </div>
                 </div>
-                <div className={childrenPadding}>
-                  <div className="flex flex-col items-center">
+                <div>
+                  <div
+                    className="flex flex-col items-center"
+                    id="player-details"
+                  >
                     <div>
                       <img
                         alt="player headshot"
@@ -190,7 +156,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                     {(player.captain ||
                       player.alternateCaptain ||
                       player.rookie) && (
-                      <div>
+                      <div className="text-amber-400">
                         {player.captain && 'Captain'}
                         {player.alternateCaptain && 'Alternate Captain'}
                         {player.rookie && 'Rookie'}
@@ -219,6 +185,9 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                   </div>
                   <div>
                     <button
+                      className={`${
+                        currentStats === 'reg' ? 'underline' : ''
+                      } mx-4 p-2 text-blue-500`}
                       onClick={(event) => handleStatChange(event)}
                       type="button"
                       value="reg"
@@ -226,6 +195,9 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                       Regular Season
                     </button>
                     <button
+                      className={`${
+                        currentStats === 'playoff' ? 'underline' : ''
+                      }  mx-4 p-2 text-blue-500`}
                       onClick={(event) => handleStatChange(event)}
                       type="button"
                       value="playoff"

@@ -3,7 +3,6 @@ import { LoaderFunctionArgs, useLoaderData } from 'react-router-dom';
 import { Team } from '../../types/types';
 import { getTeam } from '../requests';
 import invariant from 'tiny-invariant';
-import { TeamLogo } from '../components/TeamLogo';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.teamId, `params.teamId is required`);
@@ -18,16 +17,23 @@ export function TeamInfo() {
 
   return (
     <div>
-      <TeamLogo size="large" teamId={team.id} />
-      <h1>Team Info</h1>
-      <p>{team.name}</p>
-      <span>Conference: {team.conference.name}</span>
-      <span>Division: {team.division.name}</span>
-      <span>Founded: {team.firstYearOfPlay}</span>
-      <span>Location: {team.locationName}</span>
-      <span>Official Site: {team.officialSiteUrl}</span>
-      <span>Venue: {team.venue.name}</span>
-      <span>Venue Location: {team.venue.city}</span>
+      <p className="text-3xl">Conference: {team.conference.name}</p>
+      <p className="text-3xl">Division: {team.division.name}</p>
+      <p className="text-3xl">Founded: {team.firstYearOfPlay}</p>
+      <p className="text-3xl">
+        Venue: {team.venue.name} - {team.venue.city}
+      </p>
+      <p className="text-3xl">
+        Official Site:{' '}
+        <a
+          className="text-blue-400 underline"
+          href={team.officialSiteUrl}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {team.officialSiteUrl}
+        </a>
+      </p>
     </div>
   );
 }

@@ -12,41 +12,43 @@ import { Team } from '../../types/types';
 import { getTeams } from '../requests';
 
 type LoaderData = {
-  searchTerm: string;
+  teamSearch: string;
   teams: Team[];
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
-
-  const searchTerm = url.searchParams.get('team');
-  const teams = await getTeams(searchTerm);
-  return { searchTerm, teams };
+  const teamSearchTerm = url.searchParams.get('team');
+  const teams = await getTeams(teamSearchTerm);
+  return { teamSearchTerm, teams };
 }
 
 export function Root() {
-  const { searchTerm, teams } = useLoaderData() as LoaderData;
+  const { teamSearch, teams } = useLoaderData() as LoaderData;
   const submit = useSubmit();
   const location = useLocation();
 
   React.useEffect(() => {
     const searchInput = document.getElementById('search') as HTMLInputElement;
-    searchInput.value = searchTerm;
-  }, [searchTerm]);
+    if (teamSearch) searchInput.value = teamSearch;
+  }, [teamSearch]);
 
   return (
     <>
-      <div className=" flex w-96 flex-col border-r-[1px] border-red-600 bg-red-400">
-        <h1>Teams</h1>
-        <div>
+      <div>
+        <header>NHLly</header>
+      </div>
+      <div className="flex">
+        <div className=" w-fit border-r-[1px] bg-neutral-50 p-4 text-black">
           <Form role="search">
             <input
-              aria-label="search form"
-              defaultValue={searchTerm}
+              aria-label="team search form"
+              className=" rounded-md border-2 px-2"
+              defaultValue={teamSearch}
               id="search"
               name="team"
               onChange={(event) => {
-                const isFirstSearch = searchTerm == null;
+                const isFirstSearch = teamSearch == null;
                 submit(event.currentTarget.form, {
                   action: location.pathname,
                   replace: !isFirstSearch,
@@ -60,12 +62,12 @@ export function Root() {
             {teams.length ? (
               <ul>
                 {teams.map((team) => (
-                  <li key={team.id}>
+                  <li className="my-1" key={team.id}>
                     <NavLink
                       className={({ isActive }) =>
-                        isActive ? 'bg-blue-300' : ''
+                        isActive ? 'text-blue-500' : ''
                       }
-                      to={`teams/${team.id}/info`}
+                      to={`teams/${team.id}`}
                     >
                       {team.name}
                     </NavLink>
@@ -77,9 +79,9 @@ export function Root() {
             )}
           </nav>
         </div>
-      </div>
-      <div className=" w-full bg-neutral-700">
-        <Outlet />
+        <div className=" w-full bg-neutral-200 ">
+          <Outlet />
+        </div>
       </div>
     </>
   );

@@ -8,6 +8,7 @@ import {
 import { Team } from '../../types/types';
 import { getTeam } from '../requests';
 import invariant from 'tiny-invariant';
+import { TeamHeader } from '../components/TeamHeader';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.teamId, `params.teamId is required`);
@@ -19,14 +20,19 @@ export function TeamContainer() {
   const team = useLoaderData() as Team;
 
   return (
-    <div>
-      <h1>Team Info Will Go Here</h1>
-      <p>{team.name}</p>
-      <nav>
+    <div className="flex flex-col p-6 text-black ">
+      <div className="text-center">
+        <TeamHeader teamId={team.id} teamName={team.name} />
+      </div>
+      <nav className="mb-4 ">
         <ul className="flex justify-evenly">
-          <li>
+          <li className="">
             <NavLink
-              className={({ isActive }) => (isActive ? 'bg-blue-300' : '')}
+              className={({ isActive }: { isActive: boolean }) =>
+                isActive
+                  ? 'block w-40 rounded-lg bg-white px-2 py-3 text-center text-base font-medium text-blue-500 underline '
+                  : 'block w-40 rounded-lg bg-white px-2 py-3 text-center text-base font-medium text-blue-500 '
+              }
               to={`/teams/${team.id}/info`}
             >
               Info
@@ -34,7 +40,11 @@ export function TeamContainer() {
           </li>
           <li>
             <NavLink
-              className={({ isActive }) => (isActive ? 'bg-blue-300' : '')}
+              className={({ isActive }: { isActive: boolean }) =>
+                isActive
+                  ? 'block w-40 rounded-lg bg-white px-2 py-3 text-center text-base font-medium text-blue-500 underline '
+                  : 'block w-40 rounded-lg bg-white px-2 py-3 text-center text-base font-medium text-blue-500 '
+              }
               to={`/teams/${team.id}/stats`}
             >
               Stats
@@ -42,7 +52,11 @@ export function TeamContainer() {
           </li>
           <li>
             <NavLink
-              className={({ isActive }) => (isActive ? 'bg-blue-300' : '')}
+              className={({ isActive }: { isActive: boolean }) =>
+                isActive
+                  ? 'block w-40 rounded-lg bg-white px-2 py-3 text-center text-base font-medium text-blue-500 underline '
+                  : 'block w-40 rounded-lg bg-white px-2 py-3 text-center text-base font-medium text-blue-500 '
+              }
               to={`/teams/${team.id}/roster`}
             >
               Roster

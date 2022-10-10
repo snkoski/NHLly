@@ -83,7 +83,7 @@ type GameType = {
   postSeason: boolean;
 };
 
-type TeamCountingStats = {
+export type TeamCountingStats = {
   evGGARatio: number;
   faceOffWinPercentage: string;
   faceOffsLost: number;
@@ -114,7 +114,7 @@ type TeamCountingStats = {
   wins: number;
 };
 
-type TeamRankings = {
+export type TeamRankings = {
   evGGARatio: string;
   faceOffWinPercentage: string;
   faceOffsLost: string;

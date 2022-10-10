@@ -15,7 +15,7 @@ import { getRoster } from '../requests';
 
 type LoaderData = {
   abbreviation: string;
-  playerSearch: string;
+  playerSearch?: string;
   roster: Player[];
 };
 
@@ -23,7 +23,10 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   invariant(params.teamId, `params.teamId is required`);
   const url = new URL(request.url);
   const searchTerm = url.searchParams.get('player');
-  const { abbreviation, roster } = await getRoster(params.teamId, searchTerm);
+  const { abbreviation, roster } = (await getRoster(
+    params.teamId,
+    searchTerm,
+  )) as LoaderData;
 
   return { abbreviation, roster, searchTerm };
 }
@@ -35,14 +38,15 @@ export function TeamRoster() {
 
   React.useEffect(() => {
     const searchInput = document.getElementById('search') as HTMLInputElement;
-    searchInput.value = playerSearch;
+    if (playerSearch) searchInput.value = playerSearch;
   }, [playerSearch]);
 
   return (
-    <div id="team-roster">
+    <div className=" overflow-y-auto" id="team-roster">
       <Form role="search">
         <input
           aria-label="player search form"
+          className=" rounded-md border-2 px-2"
           defaultValue={playerSearch}
           id="player-search"
           name="player"
@@ -53,7 +57,7 @@ export function TeamRoster() {
               replace: !isFirstSearch,
             });
           }}
-          placeholder="Search Teams"
+          placeholder="Search Players"
           type="search"
         />
       </Form>
