@@ -17,6 +17,12 @@ Clone the repo
 git clone git@github.com:snkoski/NHLly.git
 ```
 
+Navigate to root of project
+
+```bash
+cd NHLly
+```
+
 Install dependencies with npm
 
 ```bash
