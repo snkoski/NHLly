@@ -7,7 +7,6 @@ import invariant from 'tiny-invariant';
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.teamId, `params.teamId is required`);
   const team = await getTeam(params.teamId);
-  console.log('team', team);
 
   return team;
 }

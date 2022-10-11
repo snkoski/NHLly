@@ -12,8 +12,6 @@ import { TeamRankingTable } from '../components/TeamRankingTable';
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.teamId, `params.teamId is required`);
   const team = await getTeamSeasonStats(params.teamId);
-  console.log('team stats', team.teamStats[0].splits[0].stat);
-  console.log('team rankings', team.teamStats[0].splits[1].stat);
   const stats = team.teamStats[0].splits[0].stat;
   const rankings = team.teamStats[0].splits[1].stat;
 

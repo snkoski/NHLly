@@ -12,23 +12,22 @@ describe('test for testing', () => {
     });
     cy.get('a').contains('Roster').click();
     cy.get('#team-roster')
-      .within(function() {
-        cy.get('ul').within(function() {
+      .within(function () {
+        cy.get('ul').within(function () {
           cy.get('a')
             .eq(1)
-            .then(function(link) {
+            .then(function (link) {
               const firstPlayer = link.text().split(' ')[0];
-              console.log('firstPlayer', firstPlayer);
               cy.wrap(firstPlayer).as('player');
             });
         });
       })
-      .then(function() {
+      .then(function () {
         cy.get('#player-search')
           .type(this.player)
           .wait(2000)
-          .then(function() {
-            cy.get('#team-roster').within(function() {
+          .then(function () {
+            cy.get('#team-roster').within(function () {
               cy.get('a').first().click();
             });
           });

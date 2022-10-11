@@ -47,7 +47,6 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const playoffYearByYearStats = await getPlayerPlayoffYearByYearStats(
     params.playerId,
   );
-  console.log('getPlayerYearByYearStats', yearByYearStats);
 
   return { player, playoffYearByYearStats, yearByYearStats };
 }
@@ -70,7 +69,6 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
       if (selectedStats !== currentStats) {
         setCurrentStats(selectedStats);
       }
-      console.log(currentStats);
     };
 
     const modalSize =
