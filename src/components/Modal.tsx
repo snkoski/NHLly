@@ -64,8 +64,9 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
       useLoaderData() as LoaderData;
 
     const [currentStats, setCurrentStats] = React.useState('reg');
-    const handleStatChange = (event) => {
-      const selectedStats = event.target.value;
+    const handleStatChange = (event: React.MouseEvent<HTMLButtonElement>) => {
+      const selectedStats = (event.target as HTMLInputElement).value;
+
       if (selectedStats !== currentStats) {
         setCurrentStats(selectedStats);
       }
@@ -76,8 +77,6 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
       dimensions === 'big'
         ? `sm:w-[90%] sm:min-w-[480px] sm:min-h-[720px]`
         : `sm:min-w-[375px] sm:max-w-[480px]`;
-
-    const closeIconPosition = dimensions === 'big' ? `sm:pr-28` : `sm:pr-10`;
 
     const navigate = useNavigate();
 
